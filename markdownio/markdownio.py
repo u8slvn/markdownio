@@ -15,4 +15,6 @@ class MarkdownIO:
         for element in self._elements:
             element.render(buffer=buffer)
             print('', file=buffer)
-            return buffer.getvalue()
+        markdown = buffer.getvalue()
+        buffer.close()
+        return markdown
