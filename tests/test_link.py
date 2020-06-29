@@ -1,4 +1,4 @@
-from markdownio.elements import link
+from markdownio.span import link
 
 
 def test_simple_link():

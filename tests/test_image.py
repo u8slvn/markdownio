@@ -1,4 +1,4 @@
-from markdownio.elements import image
+from markdownio.span import image
 
 
 def test_simple_image():

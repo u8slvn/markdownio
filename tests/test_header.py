@@ -1,28 +1,37 @@
+from markdownio import block
+
+
 def test_write_header1(document):
-    document.header1("Main title")
-    assert "# Main title\n" == document.output()
+    elem = block.Header1("Main title")
+    document.add(elem)
+    assert "# Main title\n\n" == document.output()
 
 
 def test_write_header2(document):
-    document.header2("Super big title")
-    assert "## Super big title\n" == document.output()
+    elem = block.Header2("Super big title")
+    document.add(elem)
+    assert "## Super big title\n\n" == document.output()
 
 
 def test_write_header3(document):
-    document.header3("Big title")
-    assert "### Big title\n" == document.output()
+    elem = block.Header3("Big title")
+    document.add(elem)
+    assert "### Big title\n\n" == document.output()
 
 
 def test_write_header4(document):
-    document.header4("Medium title")
-    assert "#### Medium title\n" == document.output()
+    elem = block.Header4("Medium title")
+    document.add(elem)
+    assert "#### Medium title\n\n" == document.output()
 
 
 def test_write_header5(document):
-    document.header5("Small title")
-    assert "##### Small title\n" == document.output()
+    elem = block.Header5("Small title")
+    document.add(elem)
+    assert "##### Small title\n\n" == document.output()
 
 
 def test_write_header6(document):
-    document.header6("Super small title")
-    assert "###### Super small title\n" == document.output()
+    elem = block.Header6("Super small title")
+    document.add(elem)
+    assert "###### Super small title\n\n" == document.output()

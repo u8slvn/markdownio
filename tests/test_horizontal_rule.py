@@ -1,3 +1,7 @@
+from markdownio import block
+
+
 def test_linebreak(document):
-    document.horizontal_rule()
+    elem = block.HorizontalRule()
+    document.add(elem)
     assert "---\n\n" == document.output()

@@ -1,4 +1,4 @@
-from markdownio.elements import bold, italic, strikethrough
+from markdownio.span import bold, italic, strikethrough
 
 
 def test_bold():
