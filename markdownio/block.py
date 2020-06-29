@@ -1,12 +1,17 @@
 from abc import ABC, abstractmethod
+from collections import defaultdict
+from enum import Enum, auto
 from io import StringIO
-from typing import List as _List
+from itertools import starmap
+from typing import List as TList
 
 NEWLINE = '\n'
+TABULATION = ' ' * 4
 
 
 class Block(ABC):
     _newline = NEWLINE
+    _tabulation = TABULATION
 
     @abstractmethod
     def render(self, buffer: StringIO):
@@ -55,29 +60,29 @@ class Header6(Header):
 
 
 class List(Block):
-    def __init__(self, items: _List, ordered: bool):
+    def __init__(self, items: TList, ordered: bool):
         self.items = items
         self.ordered = ordered
 
-    def render(self, buffer: StringIO, _tab: int = 0):
+    def render(self, buffer: StringIO, level: int = 0):
         for n, item in enumerate(self.items, 1):
             if isinstance(item, List):
-                sub_tab = _tab + 1
-                item.render(buffer=buffer, _tab=sub_tab)
+                sub_tab = level + 1
+                item.render(buffer=buffer, level=sub_tab)
                 continue
 
             prefix = f"{n}." if self.ordered else '*'
-            prefix = f"{'  ' * _tab}{prefix}"
+            prefix = f"{self._tabulation * level}{prefix}"
             print(f"{prefix} {item}", file=buffer)
 
 
 class OrderedList(List):
-    def __init__(self, items: _List):
+    def __init__(self, items: TList):
         super().__init__(items=items, ordered=True)
 
 
 class UnOrderedList(List):
-    def __init__(self, items: _List):
+    def __init__(self, items: TList):
         super().__init__(items=items, ordered=False)
 
 
@@ -103,3 +108,72 @@ class Code(Block):
 
     def render(self, buffer: StringIO):
         print(f'```{self.language}\n{self.text}\n```', file=buffer)
+
+
+class TableHeader(Enum):
+    LEFT = auto()
+    CENTER = auto()
+    RIGHT = auto()
+
+    @classmethod
+    def build_header(cls, max_col_width: int, align):
+        max_col_width = max_col_width if max_col_width > 3 else 3
+        return {
+            cls.RIGHT: f'{"-" * max_col_width}:',
+            cls.CENTER: f':{"-" * max_col_width}:'
+        }.get(align, f'{"-" * max_col_width}')  # Return left by default.
+
+
+class Table(Block):
+    def __init__(self, columns: int):
+        self.columns = columns
+        self.headers = []
+        self._rows = []
+        self.headers_align = [TableHeader.LEFT for _ in range(self.columns)]
+        self.max_col_widths = defaultdict(int)
+
+    @property
+    def rows(self):
+        return self.headers + self._rows
+
+    def _check_row_length(self, row: TList):
+        if len(row) != self.columns:
+            raise ValueError()
+
+    def update_max_col_widths(self, row_index: int = None):
+        if not isinstance(row_index, int):
+            row_index = len(self.rows) - 1  # Last index by default.
+        for index, value in enumerate(self.rows[row_index]):
+            value = str(value)
+            if self.max_col_widths[index] < len(value):
+                self.max_col_widths[index] = len(value)
+
+    def set_headers(self, headers: TList):
+        self._check_row_length(row=headers)
+        self.headers.insert(0, headers)
+        self.update_max_col_widths(row_index=0)
+
+    def add_row(self, row: TList):
+        self._check_row_length(row=row)
+        self._rows.append(row)
+        self.update_max_col_widths()
+
+    def _generate_header_rule(self):
+        header_rules = zip(self.max_col_widths.values(), self.headers_align)
+        header_rules = starmap(TableHeader.build_header, header_rules)
+        header_rules = list(header_rules)
+        self.headers.insert(1, header_rules)
+        self.update_max_col_widths(row_index=1)
+
+    def _render_row(self, row: TList):
+        for index, value in enumerate(row):
+            value = str(value)
+            width_diff = self.max_col_widths[index] - len(value)
+            if width_diff > 0:
+                row[index] += ' ' * width_diff
+        return f'| {" | ".join(row)} |'
+
+    def render(self, buffer: StringIO):
+        self._generate_header_rule()
+        for row in self.rows:
+            print(self._render_row(row), file=buffer)

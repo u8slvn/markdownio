@@ -37,7 +37,9 @@ def test_write_list_with_sub_lists(document):
     )
     document.add(elem)
 
-    expected = '* First item\n* Second item\n  1. Sub-list item\n  ' \
-               '2. Another sub-list item\n* Third item\n  ' \
-               '* Sub-list item\n  * Another sub-list item\n* Last item\n\n'
+    expected = '* First item\n* Second item\n' \
+               '    1. Sub-list item\n    2. Another sub-list item\n' \
+               '* Third item\n' \
+               '    * Sub-list item\n    * Another sub-list item\n' \
+               '* Last item\n\n'
     assert expected == document.output()
