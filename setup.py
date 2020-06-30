@@ -19,7 +19,8 @@ setup(
     author='u8slvn',
     author_email='u8slvn@gmail.com',
     license='MIT',
-    download_url=f"https://github.com/u8slvn/markdownio/archive/{version}.tar.gz",
+    download_url=f"https://github.com/u8slvn/markdownio/archive/"
+                 f"{version}.tar.gz",
     packages=['markdownio'],
     platforms='all',
     classifiers=[
@@ -31,7 +32,6 @@ setup(
         'Natural Language :: English',
         'Programming Language :: Python',
         "Programming Language :: Python :: 3",
-        "Programming Language :: Python :: 3.5",
         "Programming Language :: Python :: 3.6",
         "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: 3.8",
