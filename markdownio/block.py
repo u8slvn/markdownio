@@ -1,5 +1,6 @@
 from abc import ABC, abstractmethod
 from collections import defaultdict
+from contextlib import suppress
 from enum import Enum, auto
 from io import StringIO
 from itertools import starmap
@@ -138,9 +139,10 @@ class Table(Block):
 
     def _check_row_length(self, row: TList):
         if len(row) != self.columns:
-            raise ValueError()
+            raise ValueError("A new row must be the same size as the number "
+                             "of columns.")
 
-    def update_max_col_widths(self, row_index: int = None):
+    def _update_max_col_widths(self, row_index: int = None):
         if not isinstance(row_index, int):
             row_index = len(self.rows) - 1  # Last index by default.
         for index, value in enumerate(self.rows[row_index]):
@@ -151,19 +153,21 @@ class Table(Block):
     def set_headers(self, headers: TList):
         self._check_row_length(row=headers)
         self.headers.insert(0, headers)
-        self.update_max_col_widths(row_index=0)
+        self._update_max_col_widths(row_index=0)
 
     def add_row(self, row: TList):
         self._check_row_length(row=row)
         self._rows.append(row)
-        self.update_max_col_widths()
+        self._update_max_col_widths()
 
     def _generate_header_rule(self):
         header_rules = zip(self.max_col_widths.values(), self.headers_align)
         header_rules = starmap(TableHeader.build_header, header_rules)
         header_rules = list(header_rules)
+        with suppress(IndexError):
+            del self.headers[1]
         self.headers.insert(1, header_rules)
-        self.update_max_col_widths(row_index=1)
+        self._update_max_col_widths(row_index=1)
 
     def _render_row(self, row: TList):
         for index, value in enumerate(row):

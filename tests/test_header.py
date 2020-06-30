@@ -1,3 +1,5 @@
+import pytest
+
 from markdownio import block
 
 
@@ -35,3 +37,8 @@ def test_write_header6(document):
     elem = block.Header6("Super small title")
     document.add(elem)
     assert "###### Super small title\n\n" == document.output()
+
+
+def test_wrong_header_level(document):
+    with pytest.raises(ValueError):
+        _ = block.Header(level=7, text="Wrong header")

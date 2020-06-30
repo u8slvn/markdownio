@@ -16,12 +16,12 @@ tests: ## Run tests.
 
 quality: ## Check quality.
 	@flake8
-	@bandit -r sutoppu/
+	@bandit -r markdownio/
 
 coverage: ## Run tests with coverage.
-	@pytest tests/ --cov=sutoppu
+	@pytest tests/ --cov=markdownio
 
 coverage-html: ## Run tests with html output coverage.
-	@pytest tests/ --cov=sutoppu --cov-report html
+	@pytest tests/ --cov=markdownio --cov-report html
 
 ci: quality coverage ## Run CI.
