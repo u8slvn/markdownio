@@ -9,8 +9,8 @@ def test_markdownio_workflow():
     title = block.Header1("My test document")
     markdown.add(title)
 
-    text_p1 = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus " \
-              "rutrum consequat " + span.bold("odio") + " et mollis."
+    text_p1 = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. " \
+              "Vivamus rutrum consequat " + span.bold("odio") + " et mollis."
     p1 = block.Paragraph(text_p1)
     markdown.add(p1)
 
