@@ -174,7 +174,7 @@ class Table(Block):
             value = str(value)
             width_diff = self.max_col_widths[index] - len(value)
             if width_diff > 0:
-                row[index] += ' ' * width_diff
+                row[index] = f'{row[index]}{" " * width_diff}'
         return f'| {" | ".join(row)} |'
 
     def render(self, buffer: StringIO):
