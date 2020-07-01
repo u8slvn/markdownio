@@ -19,6 +19,14 @@ class Block(ABC):
         pass
 
 
+class Paragraph(Block):
+    def __init__(self, text: str):
+        self.text = text
+
+    def render(self, buffer: StringIO):
+        print(self.text, file=buffer)
+
+
 class Header(Block):
     def __init__(self, level: int, text: str):
         if level not in range(1, 7):
