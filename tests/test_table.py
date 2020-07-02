@@ -1,3 +1,5 @@
+import pytest
+
 from markdownio import block
 
 
@@ -13,3 +15,15 @@ def test_table(document):
                '| Hello | World | !     |\n' \
                '| foo   | bar   | 64    |\n\n'
     assert expected == document.output()
+
+
+def test_row_must_respect_nb_columns():
+    elem = block.Table(columns=3)
+    with pytest.raises(ValueError):
+        elem.add_row(['Hello', 'World', 'Wrong', '!'])
+
+
+def test_header_must_respect_nb_columns():
+    elem = block.Table(columns=3)
+    with pytest.raises(ValueError):
+        elem.set_headers(['one', 'two', 'three', 'wrong'])
