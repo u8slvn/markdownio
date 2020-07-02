@@ -6,12 +6,10 @@ from io import StringIO
 from itertools import starmap
 from typing import List as TList
 
-NEWLINE = '\n'
 TABULATION = ' ' * 4
 
 
 class Block(ABC):
-    _newline = NEWLINE
     _tabulation = TABULATION
 
     @abstractmethod
@@ -100,7 +98,7 @@ class BlockQuote(Block):
         self.text = text
 
     def render(self, buffer: StringIO):
-        lines = self.text.split(self._newline)
+        lines = self.text.splitlines()
         for line in lines:
             print(f"> {line}", file=buffer)
 

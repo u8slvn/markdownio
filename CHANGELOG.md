@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.0.3 (--)
+
+* Blockquote block can handle universal newlines.
+
 ## 0.0.2 (2020-07-02)
 
 * Add paragraph block.

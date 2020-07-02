@@ -2,8 +2,10 @@ from markdownio import block
 
 
 def test_blockquote(document):
-    elem = block.BlockQuote("This is a quote.\nA quote on two lines.")
+    quote = "This is a quote.\nA quote on four lines.\r\nHello.\rEnd."
+    elem = block.BlockQuote(quote)
     document.add(elem)
 
-    expected = "> This is a quote.\n> A quote on two lines.\n\n"
+    expected = "> This is a quote.\n> A quote on four lines.\n" \
+               "> Hello.\n> End.\n\n"
     assert expected == document.output()
