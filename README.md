@@ -1,4 +1,5 @@
 # MarkdownIO
+
 [![Pypi Version](https://img.shields.io/pypi/v/markdownio.svg)](https://pypi.org/project/markdownio/)
 [![Python Version](https://img.shields.io/pypi/pyversions/markdownio)](https://pypi.org/project/markdownio/)
 [![CI](https://github.com/u8slvn/markdownio/actions/workflows/ci.yml/badge.svg)](https://github.com/u8slvn/markdownio/actions/workflows/ci.yml)
@@ -18,7 +19,7 @@ $ pip install markdownio
 
 ```python
 from markdownio import MarkdownIO, span
-
+from markdownio.block import TableHeader
 
 markdown = MarkdownIO()
 
@@ -30,7 +31,7 @@ markdown.p(
 markdown.p(span.image(path="path/img.jpg", alt="img", title="img"))
 markdown.table(
     columns=3,
-    headers=['Col1', 'Col2', 'Col3'],
+    headers=['Col1', 'Col2', TableHeader.center('Col3')],
     rows=[
         ['foo', 'bar', 'foobar'],
         ['oof', 'rab', 2000],
@@ -50,12 +51,11 @@ output:
 ~~~markdown
 # My test document
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus rutrum consequat **odio** et mollis.
-
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus rutrum consequat **odio** et mollis. p
 ![img](path/img.jpg "img")
 
 | Col1 | Col2 | Col3   |
-| ---- | ---- | ------ |
+| ---- | ---- | :----: |
 | foo  | bar  | foobar |
 | oof  | rab  | 2000   |
 
@@ -67,3 +67,31 @@ This is an interesting article: <http://test.io>
 <p>Test</p>
 ```
 ~~~
+
+## Merge two documents
+
+```python
+from markdownio import MarkdownIO
+
+document1 = MarkdownIO()
+document1.p("Part 1.")
+
+document2 = MarkdownIO()
+document2.p("Part 2.")
+
+full_document = document1 + document2
+print(full_document.output())
+```
+
+output:
+
+```markdown
+Part 1.
+
+Part 2.
+```
+
+## Documentation
+
+- [Block elements](./documentation/block.md)
+- [Span elements](./documentation/span.md)
