@@ -56,10 +56,10 @@ class MarkdownIO:
     def h6(self, text: str):
         self.add(Header6(text=text))
 
-    def ordered_list(self, items: List):
+    def ol(self, items: List):
         self.add(OrderedList(items=items))
 
-    def unordered_list(self, items: List):
+    def ul(self, items: List):
         self.add(UnorderedList(items=items))
 
     def quote(self, text: str):

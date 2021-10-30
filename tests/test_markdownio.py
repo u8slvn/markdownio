@@ -87,13 +87,13 @@ def test_markdownio_workflow_with_short_syntax():
     markdown.h2(text="Quote")
     markdown.quote(text='A nice quote!')
     markdown.h3(text="Ordered list")
-    markdown.ordered_list(items=[
+    markdown.ol(items=[
         'Item 1',
         'Item 2',
         'Item 3',
     ])
     markdown.h4(text="Unordered list")
-    markdown.unordered_list(items=[
+    markdown.ul(items=[
         'Item 1',
         'Item 2',
         'Item 3',
