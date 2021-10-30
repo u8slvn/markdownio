@@ -8,5 +8,5 @@ def test_blockquote(document):
     document.add(elem)
 
     expected = "Lorem ipsum dolor sit amet, consectetur adipiscing elit.\n" \
-               "Vivamus rutrum consequat odio et mollis.\n\n"
+               "Vivamus rutrum consequat odio et mollis.\n"
     assert expected == document.output()

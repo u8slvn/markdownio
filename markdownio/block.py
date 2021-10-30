@@ -4,7 +4,7 @@ from contextlib import suppress
 from enum import Enum, auto
 from io import StringIO
 from itertools import starmap
-from typing import List as TList
+from typing import List
 
 TABULATION = " " * 4
 
@@ -66,14 +66,14 @@ class Header6(Header):
         super().__init__(level=6, text=text)
 
 
-class List(Block):
-    def __init__(self, items: TList, ordered: bool):
+class BlockList(Block):
+    def __init__(self, items: List, ordered: bool):
         self.items = items
         self.ordered = ordered
 
     def render(self, buffer: StringIO, level: int = 0):
         for n, item in enumerate(self.items, 1):
-            if isinstance(item, List):
+            if isinstance(item, BlockList):
                 sub_tab = level + 1
                 item.render(buffer=buffer, level=sub_tab)
                 continue
@@ -83,13 +83,13 @@ class List(Block):
             print(f"{prefix} {item}", file=buffer)
 
 
-class OrderedList(List):
-    def __init__(self, items: TList):
+class OrderedList(BlockList):
+    def __init__(self, items: List):
         super().__init__(items=items, ordered=True)
 
 
-class UnorderedList(List):
-    def __init__(self, items: TList):
+class UnorderedList(BlockList):
+    def __init__(self, items: List):
         super().__init__(items=items, ordered=False)
 
 
@@ -145,7 +145,7 @@ class Table(Block):
     def rows(self):
         return self.headers + self._rows
 
-    def _check_row_length(self, row: TList):
+    def _check_row_length(self, row: List):
         if len(row) != self.columns:
             raise ValueError(
                 "A new row must be the same size as the number " "of columns."
@@ -159,17 +159,17 @@ class Table(Block):
             if self.max_col_widths[index] < len(value):
                 self.max_col_widths[index] = len(value)
 
-    def set_headers(self, headers: TList):
+    def set_headers(self, headers: List):
         self._check_row_length(row=headers)
         self.headers.insert(0, headers)
         self._update_max_col_widths(row_index=0)
 
-    def add_row(self, row: TList):
+    def add_row(self, row: List):
         self._check_row_length(row=row)
         self._rows.append(row)
         self._update_max_col_widths()
 
-    def add_rows(self, rows: TList[TList]):
+    def add_rows(self, rows: List[List]):
         for row in rows:
             self.add_row(row=row)
 
@@ -182,7 +182,7 @@ class Table(Block):
         self.headers.insert(1, header_rules)
         self._update_max_col_widths(row_index=1)
 
-    def _render_row(self, row: TList):
+    def _render_row(self, row: List):
         for index, value in enumerate(row):
             value = str(value)
             width_diff = self.max_col_widths[index] - len(value)

@@ -19,7 +19,7 @@ def test_table(document):
                '| Hello    | World | !      |\n' \
                '| foo      | bar   | 64     |\n' \
                '| multiple | rows  | test 1 |\n' \
-               '| multiple | rows  | test 2 |\n\n'
+               '| multiple | rows  | test 2 |\n'
     assert expected == document.output()
 
 

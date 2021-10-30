@@ -3,6 +3,11 @@ import os
 from markdownio import MarkdownIO, block, span
 
 
+def fixture_path(fixture_name: str):
+    base_path = os.path.join(os.path.dirname(os.path.abspath(__file__)))
+    return f'{base_path}/fixtures/{fixture_name}'
+
+
 def test_markdownio_workflow():
     markdown = MarkdownIO()
 
@@ -61,9 +66,7 @@ def test_markdownio_workflow():
     code = block.Code('<p>Test</p>', language='html')
     markdown.add(code)
 
-    path = os.path.join(os.path.dirname(os.path.abspath(__file__)),
-                        'example.md')
-    with open(path, 'r') as file:
+    with open(fixture_path('example1.md'), 'r') as file:
         assert file.read() == markdown.output()
 
 
@@ -103,7 +106,19 @@ def test_markdownio_workflow_with_short_syntax():
     markdown.h6("Code example")
     markdown.code(text='<p>Test</p>', language='html')
 
-    path = os.path.join(os.path.dirname(os.path.abspath(__file__)),
-                        'example.md')
-    with open(path, 'r') as file:
+    with open(fixture_path('example1.md'), 'r') as file:
+        assert file.read() == markdown.output()
+
+
+def test_merge_two_documents():
+    part_one = MarkdownIO()
+    part_one.h1("Part 1")
+    part_one.p("This is part 1")
+    part_two = MarkdownIO()
+    part_two.h1("Part 2")
+    part_two.p("This is part 2")
+
+    markdown = part_one + part_two
+
+    with open(fixture_path('example2.md'), 'r') as file:
         assert file.read() == markdown.output()

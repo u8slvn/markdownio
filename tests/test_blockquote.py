@@ -7,5 +7,5 @@ def test_blockquote(document):
     document.add(elem)
 
     expected = "> This is a quote.\n> A quote on four lines.\n" \
-               "> Hello.\n> End.\n\n"
+               "> Hello.\n> End.\n"
     assert expected == document.output()

@@ -19,20 +19,28 @@ from markdownio.block import (
 from typing import List
 
 
-class MarkdownIO:
-    def __init__(self):
-        self._elements = []
+class MarkdownIO(Block):
+    def __init__(self, elements: List = None):
+        self._elements = elements or []
+
+    def __add__(self, other):
+        return MarkdownIO(elements=[self, other])
 
     def add(self, element: Block):
         self._elements.append(element)
 
+    def render(self, buffer: StringIO = None):
+        for index, element in enumerate(self._elements):
+            if index != 0:
+                print("", file=buffer)  # new line separator between elements
+            element.render(buffer=buffer)
+
     def output(self) -> str:
         buffer = StringIO()
-        for element in self._elements:
-            element.render(buffer=buffer)
-            print("", file=buffer)  # new line
+        self.render(buffer=buffer)
         markdown = buffer.getvalue()
         buffer.close()
+
         return markdown
 
     def p(self, text: str):

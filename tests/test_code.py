@@ -6,7 +6,7 @@ def test_code_without_language(document):
     elem = block.Code(text=text)
     document.add(elem)
 
-    expected = "```\n<div>\n\t<h1>Title</h1>\n</div>\n```\n\n"
+    expected = "```\n<div>\n\t<h1>Title</h1>\n</div>\n```\n"
     assert expected == document.output()
 
 
@@ -15,7 +15,7 @@ def test_code_with_language(document):
     elem = block.Code(text=text, language='python')
     document.add(elem)
 
-    expected = "```python\ndef add(a, b):\n\treturn a + b\n```\n\n"
+    expected = "```python\ndef add(a, b):\n\treturn a + b\n```\n"
     assert expected == document.output()
 
 
