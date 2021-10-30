@@ -10,7 +10,7 @@ class MarkdownIO:
     def add(self, element: Block):
         self._elements.append(element)
 
-    def output(self):
+    def output(self) -> str:
         buffer = StringIO()
         for element in self._elements:
             element.render(buffer=buffer)

@@ -169,6 +169,10 @@ class Table(Block):
         self._rows.append(row)
         self._update_max_col_widths()
 
+    def add_rows(self, rows: TList[TList]):
+        for row in rows:
+            self.add_row(row=row)
+
     def _generate_header_rule(self):
         header_rules = zip(self.max_col_widths.values(), self.headers_align)
         header_rules = starmap(TableHeader.build_header, header_rules)

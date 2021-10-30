@@ -9,9 +9,9 @@ tests: ## Run tests.
 	@poetry run pytest tests/ -x -vv
 
 quality: ## Check quality.
-	@poetry run black --check markdownio/
 	@poetry run flake8
 	@poetry run bandit -r markdownio/
+	@poetry run black --check markdownio/
 
 format: ## Format files.
 	@poetry run black markdownio/
