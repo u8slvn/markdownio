@@ -1,10 +1,10 @@
 # MarkdownIO
 [![Pypi Version](https://img.shields.io/pypi/v/markdownio.svg)](https://pypi.org/project/markdownio/)
 [![Python Version](https://img.shields.io/pypi/pyversions/markdownio)](https://pypi.org/project/markdownio/)
-[![Build Status](https://travis-ci.org/u8slvn/markdownio.svg?branch=master)](https://travis-ci.org/u8slvn/markdownio)
+[![CI](https://github.com/u8slvn/markdownio/actions/workflows/ci.yml/badge.svg)](https://github.com/u8slvn/markdownio/actions/workflows/ci.yml)
 [![Coverage Status](https://coveralls.io/repos/github/u8slvn/markdownio/badge.svg?branch=master)](https://coveralls.io/github/u8slvn/markdownio?branch=master)
-[![Code Style](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 [![Project license](https://img.shields.io/pypi/l/markdownio)](https://pypi.org/project/markdownio/)
+[![Code Style](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 
 Python tool to write Markdown as code easily.
 
