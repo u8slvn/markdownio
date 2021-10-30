@@ -20,6 +20,6 @@ coverage: ## Run tests with coverage.
 	@poetry run pytest tests/ --cov=markdownio
 
 coverage-html: ## Run tests with html output coverage.
-	@poerty run pytest tests/ --cov=markdownio --cov-report html
+	@poetry run pytest tests/ --cov=markdownio --cov-report html
 
 ci: quality coverage ## Run CI.

@@ -9,9 +9,27 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus rutrum consequa
 | foo  | bar  | foobar |
 | oof  | rab  | 2000   |
 
-This is an interesting article: <http://test.io>
+## Quote
 
-## Code example
+> A nice quote!
+
+### Ordered list
+
+1. Item 1
+2. Item 2
+3. Item 3
+
+#### Unordered list
+
+* Item 1
+* Item 2
+* Item 3
+
+##### Horizontal rule
+
+---
+
+###### Code example
 
 ```html
 <p>Test</p>

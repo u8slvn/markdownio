@@ -14,7 +14,7 @@ class Block(ABC):
 
     @abstractmethod
     def render(self, buffer: StringIO):
-        pass
+        raise NotImplementedError
 
 
 class Paragraph(Block):
@@ -88,7 +88,7 @@ class OrderedList(List):
         super().__init__(items=items, ordered=True)
 
 
-class UnOrderedList(List):
+class UnorderedList(List):
     def __init__(self, items: TList):
         super().__init__(items=items, ordered=False)
 

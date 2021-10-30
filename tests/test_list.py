@@ -10,7 +10,7 @@ def test_write_ordered_list(document):
 
 
 def test_write_unordered_list(document):
-    elem = block.UnOrderedList(['First item', 'Second item', 'Last item'])
+    elem = block.UnorderedList(['First item', 'Second item', 'Last item'])
     document.add(elem)
 
     expected = '* First item\n* Second item\n* Last item\n\n'
@@ -27,7 +27,7 @@ def test_write_list_with_sub_lists(document):
                 'Another sub-list item',
             ]),
             'Third item',
-            block.UnOrderedList([
+            block.UnorderedList([
                 'Sub-list item',
                 'Another sub-list item',
             ]),
