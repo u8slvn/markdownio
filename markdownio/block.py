@@ -6,7 +6,7 @@ from io import StringIO
 from itertools import starmap
 from typing import List as TList
 
-TABULATION = ' ' * 4
+TABULATION = " " * 4
 
 
 class Block(ABC):
@@ -78,7 +78,7 @@ class List(Block):
                 item.render(buffer=buffer, level=sub_tab)
                 continue
 
-            prefix = f"{n}." if self.ordered else '*'
+            prefix = f"{n}." if self.ordered else "*"
             prefix = f"{self._tabulation * level}{prefix}"
             print(f"{prefix} {item}", file=buffer)
 
@@ -105,16 +105,16 @@ class BlockQuote(Block):
 
 class HorizontalRule(Block):
     def render(self, buffer: StringIO):
-        print('---', file=buffer)
+        print("---", file=buffer)
 
 
 class Code(Block):
-    def __init__(self, text: str, language: str = ''):
+    def __init__(self, text: str, language: str = ""):
         self.text = text
         self.language = language
 
     def render(self, buffer: StringIO):
-        print(f'```{self.language}\n{self.text}\n```', file=buffer)
+        print(f"```{self.language}\n{self.text}\n```", file=buffer)
 
 
 class TableHeader(Enum):
@@ -127,8 +127,10 @@ class TableHeader(Enum):
         max_col_width = max_col_width if max_col_width > 3 else 3
         return {
             cls.RIGHT: f'{"-" * max_col_width}:',
-            cls.CENTER: f':{"-" * max_col_width}:'
-        }.get(align, f'{"-" * max_col_width}')  # Return left by default.
+            cls.CENTER: f':{"-" * max_col_width}:',
+        }.get(
+            align, f'{"-" * max_col_width}'
+        )  # Return left by default.
 
 
 class Table(Block):
@@ -145,8 +147,9 @@ class Table(Block):
 
     def _check_row_length(self, row: TList):
         if len(row) != self.columns:
-            raise ValueError("A new row must be the same size as the number "
-                             "of columns.")
+            raise ValueError(
+                "A new row must be the same size as the number " "of columns."
+            )
 
     def _update_max_col_widths(self, row_index: int = None):
         if not isinstance(row_index, int):
