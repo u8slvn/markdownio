@@ -43,3 +43,31 @@ def test_write_list_with_sub_lists(document):
                '    * Sub-list item\n    * Another sub-list item\n' \
                '* Last item\n'
     assert expected == document.output()
+
+
+def test_write_list_with_untyped_sub_lists(document):
+    elem = block.BlockList(
+        [
+            'First item',
+            'Second item',
+            [
+                'Sub-list item',
+                'Another sub-list item',
+            ],
+            'Third item',
+            [
+                'Sub-list item',
+                'Another sub-list item',
+            ],
+            'Last item'
+        ],
+        ordered=False
+    )
+    document.add(elem)
+
+    expected = '* First item\n* Second item\n' \
+               '    * Sub-list item\n    * Another sub-list item\n' \
+               '* Third item\n' \
+               '    * Sub-list item\n    * Another sub-list item\n' \
+               '* Last item\n'
+    assert expected == document.output()

@@ -1,9 +1,12 @@
 # Changelog
 
-## 0.0.3 (--)
+## 0.1.0 (--)
 
 * Blockquote block can handle universal newlines.
 * Multiple rows at a time can be added in table.
+* MarkdownIO document can be merged with `+` operator.
+* Table header can be aligned (left, right, center).
+* Fix nested list render.
 
 ## 0.0.2 (2020-07-02)
 

@@ -73,6 +73,8 @@ class BlockList(Block):
 
     def render(self, buffer: StringIO, level: int = 0):
         for n, item in enumerate(self.items, 1):
+            if isinstance(item, List):
+                item = BlockList(items=item, ordered=self.ordered)
             if isinstance(item, BlockList):
                 sub_tab = level + 1
                 item.render(buffer=buffer, level=sub_tab)
@@ -117,28 +119,36 @@ class Code(Block):
         print(f"```{self.language}\n{self.text}\n```", file=buffer)
 
 
-class TableHeader(Enum):
+class _Alignment(Enum):
     LEFT = auto()
     CENTER = auto()
     RIGHT = auto()
 
+
+class TableHeader:
+    def __init__(self, text, alignment: _Alignment):
+        self.text = text
+        self.alignment = alignment
+
     @classmethod
-    def build_header(cls, max_col_width: int, align):
-        max_col_width = max_col_width if max_col_width > 3 else 3
-        return {
-            cls.RIGHT: f'{"-" * max_col_width}:',
-            cls.CENTER: f':{"-" * max_col_width}:',
-        }.get(
-            align, f'{"-" * max_col_width}'
-        )  # Return left by default.
+    def left(cls, text):
+        return cls(text=text, alignment=_Alignment.LEFT)
+
+    @classmethod
+    def right(cls, text):
+        return cls(text=text, alignment=_Alignment.RIGHT)
+
+    @classmethod
+    def center(cls, text):
+        return cls(text=text, alignment=_Alignment.CENTER)
 
 
 class Table(Block):
     def __init__(self, columns: int):
         self.columns = columns
         self.headers = []
+        self._alignments = []
         self._rows = []
-        self.headers_align = [TableHeader.LEFT for _ in range(self.columns)]
         self.max_col_widths = defaultdict(int)
 
     @property
@@ -161,6 +171,12 @@ class Table(Block):
 
     def set_headers(self, headers: List):
         self._check_row_length(row=headers)
+        for index, header in enumerate(headers):
+            if isinstance(header, TableHeader):
+                headers[index] = header.text
+                self._alignments.append(header.alignment)
+                continue
+            self._alignments.append(_Alignment.LEFT)  # Left by default
         self.headers.insert(0, headers)
         self._update_max_col_widths(row_index=0)
 
@@ -173,10 +189,19 @@ class Table(Block):
         for row in rows:
             self.add_row(row=row)
 
-    def _generate_header_rule(self):
-        header_rules = zip(self.max_col_widths.values(), self.headers_align)
-        header_rules = starmap(TableHeader.build_header, header_rules)
-        header_rules = list(header_rules)
+    @staticmethod
+    def _build_header_rule(max_col_width: int, alignment: _Alignment):
+        max_col_width = max_col_width if max_col_width > 3 else 3
+        return {
+            _Alignment.RIGHT: f'{"-" * (max_col_width - 1)}:',
+            _Alignment.CENTER: f':{"-" * (max_col_width - 2)}:',
+        }.get(
+            alignment, f'{"-" * max_col_width}'
+        )  # Return left by default.
+
+    def _generate_header(self):
+        header_rules = zip(self.max_col_widths.values(), self._alignments)
+        header_rules = list(starmap(self._build_header_rule, header_rules))
         with suppress(IndexError):
             del self.headers[1]
         self.headers.insert(1, header_rules)
@@ -191,6 +216,6 @@ class Table(Block):
         return f'| {" | ".join(row)} |'
 
     def render(self, buffer: StringIO):
-        self._generate_header_rule()
+        self._generate_header()
         for row in self.rows:
             print(self._render_row(row), file=buffer)

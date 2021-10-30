@@ -80,7 +80,7 @@ class MarkdownIO(Block):
         self.add(Code(text=text, language=language))
 
     def table(self, columns: int, headers: List, rows: List):
-        _table = Table(columns=columns)
-        _table.set_headers(headers=headers)
-        _table.add_rows(rows=rows)
-        self.add(_table)
+        table = Table(columns=columns)
+        table.set_headers(headers=headers)
+        table.add_rows(rows=rows)
+        self.add(table)
