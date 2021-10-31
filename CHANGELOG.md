@@ -1,6 +1,6 @@
 # Changelog
 
-## 0.1.0 (--)
+## 0.1.0 (2021-10-31)
 
 * Blockquote block can handle universal newlines.
 * Multiple rows at a time can be added in table.
